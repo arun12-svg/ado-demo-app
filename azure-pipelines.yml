@@ -2,21 +2,11 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  name: Default   # MUST match agent pool name
 
 steps:
-- checkout: self
-
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.10'
-  displayName: "Use Python 3.10"
-
 - script: |
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
-  displayName: "Install dependencies"
-
-- script: |
-    pytest
-  displayName: "Run tests"
+    echo "Hello from self-hosted Azure VM agent"
+    hostname
+    whoami
+  displayName: "Test agent"
