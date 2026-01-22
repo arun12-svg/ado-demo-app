@@ -2,11 +2,36 @@ trigger:
 - main
 
 pool:
-  name: Default   # MUST match agent pool name
+  name: Default   # change only if your agent pool name is different
 
 steps:
 - script: |
-    echo "Hello from self-hosted Azure VM agent"
-    hostname
-    whoami
-  displayName: "Test agent"
+    echo "===== BASIC AGENT TEST ====="
+    echo "Agent Name       : $(Agent.Name)"
+    echo "Agent Machine    : $(Agent.MachineName)"
+    echo "Agent OS         : $(Agent.OS)"
+    echo "Working Directory: $(System.DefaultWorkingDirectory)"
+    echo "Pipeline Name    : $(Build.DefinitionName)"
+    echo "Run ID           : $(Build.BuildId)"
+  displayName: "Print Agent Details"
+
+- script: |
+    echo "===== SYSTEM INFO ====="
+    uname -a
+    lsb_release -a || cat /etc/os-release
+    df -h
+    free -m
+  displayName: "System Info"
+
+- script: |
+    echo "===== FILE TEST ====="
+    echo "Hello from Azure DevOps Self-Hosted Agent" > agent_test.txt
+    ls -l
+    cat agent_test.txt
+  displayName: "File Read/Write Test"
+
+- script: |
+    echo "===== TOOL CHECK ====="
+    which git && git --version
+    which bash && bash --version
+  displayName: "Tool Validation"
